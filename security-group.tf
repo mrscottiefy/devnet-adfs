@@ -50,3 +50,29 @@ resource "aws_security_group" "sgrp_managed_ad_terminal" {
     cidr_blocks = [local.vpc_cidr_block]
   }
 }
+
+resource "aws_security_group" "sgrp_ec2_for_ssm" {
+  name        = "sgrp-ec2-ssm"
+  description = "SG for SSM to act on EC2 service"
+  vpc_id      = local.vpc_id
+
+  tags = {
+    Name = "sgrp-ec2-ssm"
+  }
+
+  ingress {
+    description = "HTTP for SSM endpoints within VPC"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [local.vpc_cidr_block]
+  }
+
+  egress {
+    description = "All traffic to reosurces within VPC"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [local.vpc_cidr_block]
+  }
+}
