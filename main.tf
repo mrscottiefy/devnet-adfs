@@ -31,5 +31,6 @@ locals {
   //AWS EC2 Management Terminal Variables
   managed_terminal_ami           = "ami-0e0c0f774a3f68bf9"
   managed_terminal_instance_type = "t3.small"
+  managed_terminal_ec2_role      = "iam:devnet-EC2DirectoryServiceMgmt"
 
 }
