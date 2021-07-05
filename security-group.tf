@@ -1,4 +1,4 @@
-resource "aws_security_group" "sgrp-managed-ad-terminal" {
+resource "aws_security_group" "sgrp_managed_ad_terminal" {
   name        = "sgrp-managed-ad-terminal"
   description = "SG for connecting, joining and administering the managed-ad"
   vpc_id      = local.vpc_id
