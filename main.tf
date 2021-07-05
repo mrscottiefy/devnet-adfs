@@ -13,9 +13,19 @@ provider "aws" {
 }
 
 locals {
-  vpc_id                 = "vpc-02b8bbfcc9e439e23"
-  vpc_cidr_block         = "10.0.0.0/16"
+  //General AWS Comparment Variables 
+  vpc_id                 = "vpc-02b8bbfcc9e439e23"    //vpc main
+  vpc_cidr_block         = "10.0.0.0/16"              //vpc main cidr range
+  openvpn_cidr_block     = "10.0.3.198/32"            //ip address of open vpn server for RDP
   private_subnet_az_a_id = "subnet-0b426229916942e24" //sub-a-devnet-sbxezit-IT01
   private_subnet_az_b_id = "subnet-0782e33d3e8c212c4" //sub-b-devnet-sbxezit-IT02
   ec2_key                = "scott-keypair"
+
+  //AWS Directory Service Variables
+  directory_service_name        = "soedev.gov.sg"
+  directory_service_secret_name = "directory-service-soedev-admin"
+  directory_service_creds = jsondecode(
+    data.aws_secretsmanager_secret_version.directory_service_secret.secret_string
+  )
+  //ADFS Variables
 }

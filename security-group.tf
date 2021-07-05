@@ -1,7 +1,11 @@
-resource "aws_security_group" "sandbox-managed-ad-terminal-sec-grp" {
+resource "aws_security_group" "sgrp-managed-ad-terminal" {
   name        = "sgrp-managed-ad-terminal"
   description = "SG for connecting, joining and administering the managed-ad"
   vpc_id      = local.vpc_id
+
+  tags = {
+    Name = "sgrp-managed-ad-terminal"
+  }
 
   ingress {
     description = "RDP from OpenVPN Server"
@@ -24,7 +28,7 @@ resource "aws_security_group" "sandbox-managed-ad-terminal-sec-grp" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  ingress {
+  /* ingress {
     description = "DNS TCP/UDP from Domain Controllers"
     from_port   = 53
     to_port     = 53
@@ -32,7 +36,7 @@ resource "aws_security_group" "sandbox-managed-ad-terminal-sec-grp" {
     cidr_blocks = ["${aws_directory_service_directory.sandbox-domain-service.dns_ip_addresses[0]}/32",
       "${aws_directory_service_directory.sandbox-domain-service.dns_ip_addresses[1]}/32"
     ]
-  }
+  } */
   egress {
     description = "All traffic to reosurces within VPC"
     from_port   = 0
