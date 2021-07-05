@@ -29,10 +29,17 @@ resource "aws_security_group" "sgrp_managed_ad_terminal" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
-    description = "DNS TCP/UDP from Domain Controllers"
+    description = "DNS TCP from AWS Directory Service Managed AD Domain Controllers"
     from_port   = 53
     to_port     = 53
-    protocol    = "-1"
+    protocol    = "tcp"
+    cidr_blocks = formatlist("%s/32", aws_directory_service_directory.directory_service.dns_ip_addresses) //to append CIDR block range of /32 to each string array value of dns_ip_addresses
+  }
+  ingress {
+    description = "DNS UDP from AWS Directory Service Managed AD Domain Controllers"
+    from_port   = 53
+    to_port     = 53
+    protocol    = "udp"
     cidr_blocks = formatlist("%s/32", aws_directory_service_directory.directory_service.dns_ip_addresses) //to append CIDR block range of /32 to each string array value of dns_ip_addresses
   }
   egress {
