@@ -1,5 +1,4 @@
 data "aws_secretsmanager_secret_version" "directory_service_secret" {
-  # Fill in the name you gave to your secret
   secret_id = local.directory_service_secret_name
 }
 

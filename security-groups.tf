@@ -61,7 +61,7 @@ resource "aws_security_group" "sgrp_ec2_for_ssm" {
   }
 
   ingress {
-    description = "HTTP for SSM endpoints within VPC"
+    description = "HTTPS for SSM endpoints within VPC"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"

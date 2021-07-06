@@ -33,4 +33,13 @@ locals {
   managed_terminal_instance_type = "t3.small"
   managed_terminal_ec2_role      = "iam:devnet-EC2DirectoryServiceMgmt"
 
+  //VPC Endpoints for SSM
+  vpcep_service_name_ssm     = "com.amazonaws.ap-southeast-1.ssm"
+  vpcep_service_name_ssmmsgs = "com.amazonaws.ap-southeast-1.ssmmessages"
+  vpcep_service_name_ec2msgs = "com.amazonaws.ap-southeast-1.ec2messages"
+
+  vpcep_name_ssm     = "ep-devnet-sbxezit-SSM"
+  vpcep_name_ssmmsgs = "ep-devnet-sbxezit-SSMMessages"
+  vpcep_name_ec2msgs = " ep-devnet-sbxezmz-EC2MessagesEndpoint"
+
 }
