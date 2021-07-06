@@ -1,5 +1,5 @@
 resource "aws_ssm_document" "dns_for_domain_join" {
-  name          = "dns_for_domain_join"
+  name          = "windows_set_dns_for_domain"
   document_type = "Command"
   content       = <<DOC
   {

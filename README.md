@@ -16,7 +16,7 @@ This project creates the ...
 
 ## Terraform Cheat Sheet
 
-### terraform-test
+### Basic Terraform Commands
 ```
 >> terraform init
 >> terraform fmt
@@ -25,12 +25,12 @@ This project creates the ...
 >> terraform apply
 ```
 
-### Create a workspace
+### Create a Terraform workspace
 ```
 >> terraform workspace new [NAME]
 ```
 
-### For multiple environments 'workspaces'
+### Manage Terraform environments 'workspaces'
 ```
 >> terraform workspace select dev
 >> terraform apply -var-file=dev.tfvars
