@@ -40,6 +40,5 @@ locals {
 
   vpcep_name_ssm     = "ep-devnet-sbxezit-SSM"
   vpcep_name_ssmmsgs = "ep-devnet-sbxezit-SSMMessages"
-  vpcep_name_ec2msgs = " ep-devnet-sbxezmz-EC2MessagesEndpoint"
-
+  vpcep_name_ec2msgs = " ep-devnet-sbxezit-EC2MessagesEndpoint"
 }
