@@ -1,24 +1,22 @@
-resource "aws_ssm_document" "foo" {
-  name          = "test_document"
+resource "aws_ssm_document" "dns_for_domain_join" {
+  name          = "dns_for_domain_join"
   document_type = "Command"
-
-  content = <<DOC
+  content       = <<DOC
   {
-    "schemaVersion": "1.2",
-    "description": "Check ip configuration of a Linux instance.",
-    "parameters": {
-
-    },
-    "runtimeConfig": {
-      "aws:runShellScript": {
-        "properties": [
-          {
-            "id": "0.aws:runShellScript",
-            "runCommand": ["ifconfig"]
-          }
-        ]
-      }
-    }
+    "schemaVersion": "2.2",
+    "description": "Command Document for running powershell script",
+    "parameters": {},
+    "mainSteps":[
+        {
+            "action": "aws:runPowerShellScript",
+            "name": "setDNStoDomainControllers",
+            "inputs": {
+                "runCommand": [
+                    "Set-DnsClientServerAddress -interfacealias Ethernet* -serveraddresses (\"${element(tolist(aws_directory_service_directory.directory_service.dns_ip_addresses), 0)},10.0.0.2\")"
+                ]
+            }
+        }
+    ]
   }
 DOC
 }
