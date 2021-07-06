@@ -34,6 +34,7 @@ locals {
   //AWS EC2 Management Terminal Variables
   managed_terminal_ami           = "ami-0e0c0f774a3f68bf9"
   managed_terminal_instance_type = "t3.small"
+  managed_terminal_instance_name = "vm-devnet-sbxezapp-MgmtTerminal01"
 
   ////VPC Endpoints Service Names for SSM Directory Service Join - NOT CREATED AS ALREADY CREATED IN APP SUBNET AZA + AZB FOR VPC MAIN
   # vpcep_service_name_ssm     = "com.amazonaws.ap-southeast-1.ssm"
