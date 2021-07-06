@@ -1,12 +1,11 @@
-resource "aws_security_group" "sgrp_managed_ad_terminal" {
-  name        = "sgrp-managed-ad-terminal"
-  description = "SG for connecting, joining and administering the managed-ad"
+resource "aws_security_group" "sgrp_devnet_ad_mgmt_terminal" {
+  name        = "sgrp-devnet-ad-mgmt-terminal"
+  description = "Security Group for administering EC2 instances connected to AWS Directory Service Managed Active Directory."
   vpc_id      = local.vpc_id
 
   tags = {
-    Name = "sgrp-managed-ad-terminal"
+    Name = "sgrp-devnet-ad-mgmt-terminal"
   }
-
   ingress {
     description = "RDP from OpenVPN Server"
     from_port   = 3389
@@ -50,29 +49,3 @@ resource "aws_security_group" "sgrp_managed_ad_terminal" {
     cidr_blocks = [local.vpc_cidr_block]
   }
 }
-
-# resource "aws_security_group" "sgrp_ec2_for_ssm" {
-#   name        = "sgrp-ec2-ssm"
-#   description = "SG for SSM to act on EC2 service"
-#   vpc_id      = local.vpc_id
-
-#   tags = {
-#     Name = "sgrp-ec2-ssm"
-#   }
-
-#   ingress {
-#     description = "HTTPS for SSM endpoints within VPC"
-#     from_port   = 443
-#     to_port     = 443
-#     protocol    = "tcp"
-#     cidr_blocks = [local.vpc_cidr_block]
-#   }
-
-#   egress {
-#     description = "All traffic to resources within VPC"
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = [local.vpc_cidr_block]
-#   }
-# }

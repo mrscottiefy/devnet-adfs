@@ -31,10 +31,15 @@ locals {
   directory_service_creds = jsondecode(
     data.aws_secretsmanager_secret_version.directory_service_secret.secret_string
   )
-  //AWS EC2 Management Terminal Variables
+  //AWS EC2 AD Management Terminal Variables
   managed_terminal_ami           = "ami-0e0c0f774a3f68bf9"
   managed_terminal_instance_type = "t3.small"
-  managed_terminal_instance_name = "vm-devnet-sbxezapp-MgmtTerminal01"
+  managed_terminal_instance_name = "vm-devnet-sbxezapp-AD-MgmtTerminal"
+
+  //AWS EC2 AD FS Variables
+  adfs_ami           = "ami-0e0c0f774a3f68bf9"
+  adfs_instance_type = "t3.medium"
+  adfs_instance_name = "vm-devnet-sbxezapp-ADFS"
 
   ////VPC Endpoints Service Names for SSM Directory Service Join - NOT CREATED AS ALREADY CREATED IN APP SUBNET AZA + AZB FOR VPC MAIN
   # vpcep_service_name_ssm     = "com.amazonaws.ap-southeast-1.ssm"
