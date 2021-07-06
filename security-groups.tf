@@ -15,14 +15,14 @@ resource "aws_security_group" "sgrp_managed_ad_terminal" {
     cidr_blocks = ["10.0.3.198/32"]
   }
   ingress {
-    description = "LDAP from Domain Controllers"
+    description = "LDAP from AWS Directory Service Managed AD Domain Controllers"
     from_port   = 389
     to_port     = 389
     protocol    = "tcp"
     cidr_blocks = formatlist("%s/32", aws_directory_service_directory.directory_service.dns_ip_addresses) //to append CIDR block range of /32 to each string array value of dns_ip_addresses
   }
   ingress {
-    description = "SMB from Domain Controllers"
+    description = "SMB from AWS Directory Service Managed AD Domain Controllers"
     from_port   = 445
     to_port     = 445
     protocol    = "tcp"
@@ -43,7 +43,7 @@ resource "aws_security_group" "sgrp_managed_ad_terminal" {
     cidr_blocks = formatlist("%s/32", aws_directory_service_directory.directory_service.dns_ip_addresses) //to append CIDR block range of /32 to each string array value of dns_ip_addresses
   }
   egress {
-    description = "All traffic to reosurces within VPC"
+    description = "All traffic to resources within VPC"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -69,7 +69,7 @@ resource "aws_security_group" "sgrp_ec2_for_ssm" {
   }
 
   egress {
-    description = "All traffic to reosurces within VPC"
+    description = "All traffic to resources within VPC"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
