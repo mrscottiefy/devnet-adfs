@@ -31,14 +31,17 @@ locals {
   //AWS EC2 Management Terminal Variables
   managed_terminal_ami           = "ami-0e0c0f774a3f68bf9"
   managed_terminal_instance_type = "t3.small"
-  managed_terminal_ec2_role      = "iam:devnet-EC2DirectoryServiceMgmt"
 
-  //VPC Endpoints for SSM
+  //VPC Endpoints Service Names for SSM Directory Service Join
   vpcep_service_name_ssm     = "com.amazonaws.ap-southeast-1.ssm"
   vpcep_service_name_ssmmsgs = "com.amazonaws.ap-southeast-1.ssmmessages"
   vpcep_service_name_ec2msgs = "com.amazonaws.ap-southeast-1.ec2messages"
 
+  //VPC Endpoints Tag Names for SSM Directory Service Join
   vpcep_name_ssm     = "ep-devnet-sbxezit-SSM"
   vpcep_name_ssmmsgs = "ep-devnet-sbxezit-SSMMessages"
   vpcep_name_ec2msgs = " ep-devnet-sbxezit-EC2MessagesEndpoint"
+
+  //IAM Profile & Role Names for EC2-SSM Directory Service Join
+  iam_name_prefix = "devnet-EC2DirectoryService"
 }

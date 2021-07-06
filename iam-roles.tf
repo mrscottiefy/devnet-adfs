@@ -1,10 +1,10 @@
 resource "aws_iam_instance_profile" "managed-ad-terminal-profile" {
-  name = "devnet-EC2DirectoryServiceProfile"
+  name = "${local.iam_name_prefix}Profile"
   role = aws_iam_role.managed-ad-terminal-role.name
 }
 
 resource "aws_iam_role" "managed-ad-terminal-role" {
-  name               = "devnet-EC2DirectoryServiceRole"
+  name               = "${local.iam_name_prefix}Role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",

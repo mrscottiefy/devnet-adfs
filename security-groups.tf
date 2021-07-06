@@ -19,14 +19,14 @@ resource "aws_security_group" "sgrp_managed_ad_terminal" {
     from_port   = 389
     to_port     = 389
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = formatlist("%s/32", aws_directory_service_directory.directory_service.dns_ip_addresses) //to append CIDR block range of /32 to each string array value of dns_ip_addresses
   }
   ingress {
     description = "SMB from Domain Controllers"
     from_port   = 445
     to_port     = 445
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = formatlist("%s/32", aws_directory_service_directory.directory_service.dns_ip_addresses) //to append CIDR block range of /32 to each string array value of dns_ip_addresses
   }
   ingress {
     description = "DNS TCP from AWS Directory Service Managed AD Domain Controllers"
