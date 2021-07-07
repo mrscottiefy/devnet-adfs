@@ -1,6 +1,6 @@
 resource "aws_ssm_document" "ssm_set_dns_for_domain_join" {
-  name           = "windows-set-dns-for-domain"
-  document_type  = "Command"
+  name          = "windows-set-dns-for-domain"
+  document_type = "Command"
   tags = {
     Name = "windows-set-dns-for-domain"
   }
@@ -25,8 +25,8 @@ DOC
 }
 
 resource "aws_ssm_document" "ssm_install_rsat_tools" {
-  name           = "windows-install-ad-admin-tools"
-  document_type  = "Command"
+  name          = "windows-install-ad-admin-tools"
+  document_type = "Command"
   tags = {
     Name = "windows-install-ad-admin-tools"
   }
@@ -63,5 +63,37 @@ resource "aws_ssm_document" "ssm_install_rsat_tools" {
         }
     ]
 }
+DOC
+}
+
+resource "aws_ssm_document" "ssm_join_domain" {
+  name          = "windows-join-domain"
+  document_type = "Command"
+  tags = {
+    Name = "windows-join-domain"
+  }
+  content = <<DOC
+  {
+    "schemaVersion": "2.2",
+    "description": "Join the AWS Directory Services' Managed Active Directory Domain.",
+    "parameters": {},
+    "mainSteps":[
+        {
+            "action": "aws:runPowerShellScript",
+            "name": "setDNStoDomainControllers",
+            "inputs": {
+                "runCommand": [
+                    "$errorPath = 'C:\\logs\\install-ad-admin-tools-error.txt'",
+                    "$joinCred = New-Object pscredential -ArgumentList ([pscustomobject]@{
+                        UserName = "${local.directory_service_netbios_name}\Admin"
+                        Password = (ConvertTo-SecureString -String '${local.directory_service_creds.password}' -AsPlainText -Force)[0]
+                    })",
+                    "$out = Add-Computer -ComputerName . -DomainName '${local.directory_service_name}' -Credential $joinCred -PassThru -Verbose",
+                    "if ($out.HasSucceeded -ne 'True'){$out | out-file $errorPath}"
+                ]
+            }
+        }
+    ]
+  }
 DOC
 }
