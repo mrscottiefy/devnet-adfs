@@ -85,7 +85,7 @@ resource "aws_ssm_document" "ssm_join_domain" {
                 "runCommand": [
                     "$errorPath = 'C:\\logs\\install-ad-admin-tools-error.txt'",
                     "$joinCred = New-Object pscredential -ArgumentList ([pscustomobject]@{
-                        UserName = "${local.directory_service_netbios_name}\Admin"
+                        UserName = '${local.directory_service_netbios_name}\\Admin'
                         Password = (ConvertTo-SecureString -String '${local.directory_service_creds.password}' -AsPlainText -Force)[0]
                     })",
                     "$out = Add-Computer -ComputerName . -DomainName '${local.directory_service_name}' -Credential $joinCred -PassThru -Verbose",
