@@ -7,7 +7,7 @@ resource "aws_ssm_document" "ssm_set_dns_for_domain_join" {
   content = <<DOC
   {
     "schemaVersion": "2.2",
-    "description": "Setting Windows DNS Server Preferred & Secondary addresses to AWS Directory Services' Managed Active Directory domain controllers.",
+    "description": "Setting Windows DNS Server Preferred & Secondary addresses to AWS Directory Services' Managed Active Directory domain controllers. [FOR FIRST DOMAIN JOIN]",
     "parameters": {},
     "mainSteps":[
         {
@@ -75,19 +75,17 @@ resource "aws_ssm_document" "ssm_join_domain" {
   content = <<DOC
   {
     "schemaVersion": "2.2",
-    "description": "Join the AWS Directory Services' Managed Active Directory Domain.",
+    "description": "Join the AWS Directory Services' Managed Active Directory Domain. [FOR FIRST DOMAIN JOIN]",
     "parameters": {},
     "mainSteps":[
         {
             "action": "aws:runPowerShellScript",
-            "name": "setDNStoDomainControllers",
+            "name": "joinWindowsDomain",
             "inputs": {
                 "runCommand": [
                     "$errorPath = 'C:\\logs\\install-ad-admin-tools-error.txt'",
-                    "$joinCred = New-Object pscredential -ArgumentList ([pscustomobject]@{
-                        UserName = '${local.directory_service_netbios_name}\\Admin'
-                        Password = (ConvertTo-SecureString -String '${local.directory_service_creds.password}' -AsPlainText -Force)[0]
-                    })",
+                    "$password = ConvertTo-SecureString '${local.directory_service_creds.password}' -AsPlainText -Force",
+                    "$joinCred = New-Object System.Management.Automation.PSCredential ('${local.directory_service_netbios_name}\\Admin', $password)",
                     "$out = Add-Computer -ComputerName . -DomainName '${local.directory_service_name}' -Credential $joinCred -PassThru -Verbose",
                     "if ($out.HasSucceeded -ne 'True'){$out | out-file $errorPath}"
                 ]
@@ -97,3 +95,35 @@ resource "aws_ssm_document" "ssm_join_domain" {
   }
 DOC
 }
+
+resource "aws_ssm_document" "ssm_install_adfs_tools" {
+  name          = "windows-install-ad-fs-tools"
+  document_type = "Command"
+  tags = {
+    Name = "windows-install-ad-fs-tools"
+  }
+  content = <<DOC
+  {
+    "schemaVersion": "2.2",
+    "description": "Install the AD FS tools required to federate authentication with AWS Directory Services' Managed Active Directory Domain.",
+    "parameters": {},
+    "mainSteps":[
+        {
+            "action": "aws:runPowerShellScript",
+            "name": "installADFSTools",
+            "inputs": {
+                "runCommand": [
+                    "$logPath = 'C:\\logs\\install-adfs-tools-logs.txt'",
+                    "$errorPath = 'C:\\logs\\install-adfs-tools-error.txt'",
+                    "$out = Install-windowsfeature adfs-federation –IncludeManagementTools -LogPath $logPath",
+                    "if ($out.ExitCode -ne 'Success'){$out | out-file $errorPath}"
+                ]
+            }
+        }
+    ]
+  }
+DOC
+}
+
+//create SSM Doc for adding AD DS users
+//create SSM Doc for installing AD FS

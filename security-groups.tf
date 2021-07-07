@@ -46,6 +46,6 @@ resource "aws_security_group" "sgrp_devnet_ad_mgmt_terminal" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = [local.vpc_cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }

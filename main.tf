@@ -25,6 +25,7 @@ locals {
   //AWS Directory Service Variables
   directory_service_name         = "soedev.gov.sg"
   directory_service_netbios_name = "soedev"
+  directory_service_ou_path      = "OU=soedev,DC=soedev,DC=gov,DC=sg"
   directory_service_secret_name  = "directory-service-soedev-admin"
   directory_service_creds = jsondecode(
     data.aws_secretsmanager_secret_version.directory_service_secret.secret_string
