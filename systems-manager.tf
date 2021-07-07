@@ -1,7 +1,10 @@
 resource "aws_ssm_document" "ssm_set_dns_for_domain_join" {
-  name          = "windows_set_dns_for_domain"
-  document_type = "Command"
-  content       = <<DOC
+  name           = "windows-set-dns-for-domain"
+  document_type  = "Command"
+  tags = {
+    Name = "windows-set-dns-for-domain"
+  }
+  content = <<DOC
   {
     "schemaVersion": "2.2",
     "description": "Setting Windows DNS Server Preferred & Secondary addresses to AWS Directory Services' Managed Active Directory domain controllers.",
@@ -22,12 +25,15 @@ DOC
 }
 
 resource "aws_ssm_document" "ssm_install_rsat_tools" {
-  name          = "windows_install_ad_admin_tools"
-  document_type = "Command"
-  content       = <<DOC
+  name           = "windows-install-ad-admin-tools"
+  document_type  = "Command"
+  tags = {
+    Name = "windows-install-ad-admin-tools"
+  }
+  content = <<DOC
   {
     "schemaVersion": "2.2",
-    "description": "Installs Windows Features for AD Tools and DNS Server to administer the users and DNS records for AWS Directory Services' Managed Active Directory domain controllers.",
+    "description": "Installs Windows Features for AD Tools and DNS Server to administer the users and DNS records for AWS Directory Services' Managed Active Directory domain controllers. These do not require restarts.",
     "parameters": {},
     "mainSteps":[
         {
@@ -35,22 +41,27 @@ resource "aws_ssm_document" "ssm_install_rsat_tools" {
             "name": "installRSATADTools",
             "inputs": {
                 "runCommand": [
-                    "$out = Install-WindowsFeature -Name RSAT-AD-Tools -IncludeAllSubFeature -IncludeManagementTools  -LogPath 'C:\logs\install-adfs-logs.txt'",
-                    "if ($out.ExitCode -ne 'Success'){$out | out-file 'C:\logs\install-adfs-error.txt'}"
+                    "$logPath = 'C:\\logs\\install-ad-admin-tools-logs.txt'",
+                    "$errorPath = 'C:\\logs\\install-ad-admin-tools-error.txt'",
+                    "$out = Install-WindowsFeature -Name RSAT-AD-Tools -IncludeAllSubFeature -IncludeManagementTools  -LogPath $logPath",
+                    "if ($out.ExitCode -ne 'Success'){$out | out-file $errorPath}"
                 ]
             }
-        },
+        }
+        ,
         {
             "action": "aws:runPowerShellScript",
             "name": "installRSATDNSServer",
             "inputs": {
                 "runCommand": [
-                    "$out = Install-WindowsFeature -Name RSAT-DNS-Server -IncludeAllSubFeature -IncludeManagementTools  -LogPath 'C:\logs\install-adfs-logs.txt'",
-                    "if ($out.ExitCode -ne 'Success'){$out | out-file 'C:\logs\install-adfs-error.txt'}"
+                    "$logPath = 'C:\\logs\\install-ad-admin-tools-logs.txt'",
+                    "$errorPath = 'C:\\logs\\install-ad-admin-tools-error.txt'",
+                    "$out = Install-WindowsFeature -Name RSAT-DNS-Server -IncludeAllSubFeature -IncludeManagementTools  -LogPath $logPath",
+                    "if ($out.ExitCode -ne 'Success'){$out | out-file $errorPath}"
                 ]
             }
         }
     ]
-  }
+}
 DOC
 }
