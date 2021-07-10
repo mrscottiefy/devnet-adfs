@@ -42,7 +42,7 @@ resource "aws_security_group" "sgrp_devnet_ad_mgmt_terminal" {
     cidr_blocks = formatlist("%s/32", aws_directory_service_directory.directory_service.dns_ip_addresses) //to append CIDR block range of /32 to each string array value of dns_ip_addresses
   }
   egress {
-    description = "All traffic to resources within VPC"
+    description = "All Traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
