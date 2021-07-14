@@ -41,6 +41,20 @@ resource "aws_security_group" "sgrp_devnet_ad_mgmt_terminal" {
     protocol    = "udp"
     cidr_blocks = formatlist("%s/32", aws_directory_service_directory.directory_service.dns_ip_addresses) //to append CIDR block range of /32 to each string array value of dns_ip_addresses
   }
+  ingress {
+    description = "Kerberos TCP from AWS Directory Service Managed AD Domain Controllers"
+    from_port   = 88
+    to_port     = 88
+    protocol    = "tcp"
+    cidr_blocks = formatlist("%s/32", aws_directory_service_directory.directory_service.dns_ip_addresses) //to append CIDR block range of /32 to each string array value of dns_ip_addresses
+  }
+  ingress {
+    description = "HTTPS TCP from VPC"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [local.vpc_cidr_block]
+  }
   egress {
     description = "All Traffic"
     from_port   = 0
